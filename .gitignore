@@ -1,0 +1,10 @@
+node_modules/*
+game_files/*
+logs/*
+.idea/*
+
+constants/bots.json
+
+# misc
+.DS_Store
+.env
