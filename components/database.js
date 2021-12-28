@@ -113,6 +113,7 @@ class Postgres {
         delete item.low_rank
       }
 
+      delete item.floatid
       delete item.updated
       delete item.souvenir
       delete item.stattrak
