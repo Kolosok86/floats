@@ -1,7 +1,7 @@
 const errors = require('../components/errors')
 const logger = require('../services/logger')
 const Redis = require('ioredis')
-const conf = require("../config")
+const conf = require('../config')
 
 const rate = conf.get('rate_limit')
 

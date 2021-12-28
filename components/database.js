@@ -149,12 +149,15 @@ class Postgres {
 
     const [data] = result.rows
 
-    if (data.high_rank !== 1001) {
-      obj.high_rank = parseInt(data.high_rank)
+    obj.high_rank = parseInt(item.high_rank)
+    obj.low_rank = parseInt(item.low_rank)
+
+    if (data.high_rank === 1001) {
+      delete item.high_rank
     }
 
-    if (data.low_rank !== 1001) {
-      obj.low_rank = parseInt(data.low_rank)
+    if (data.low_rank === 1001) {
+      delete item.low_rank
     }
 
     return obj

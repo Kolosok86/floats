@@ -5,10 +5,6 @@ const ratelimit = require('koa-ratelimit')
 
 const opts = require('./options')
 
-const middlewares = [
-  logger(opts.logger),
-  ratelimit(opts.ratelimit),
-  helmet(opts.helmet),
-]
+const middlewares = [logger(opts.logger), ratelimit(opts.ratelimit), helmet(opts.helmet)]
 
 module.exports = () => compose(middlewares)

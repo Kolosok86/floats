@@ -33,7 +33,7 @@ const conf = convict({
     format: 'int',
     default: 1,
     env: 'RATE_LIMIT',
-  }
+  },
 })
 
 conf.validate()

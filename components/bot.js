@@ -108,7 +108,7 @@ class Bot {
 
         // paintwear -> floatvalue to match previous API version response
         itemData.floatvalue = itemData.paintwear
-        
+
         // delete unused
         delete itemData.paintwear
         delete itemData.itemid

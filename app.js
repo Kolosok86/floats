@@ -61,11 +61,11 @@ async function handleJob(ctx, next) {
     price = parseInt(ctx?.query?.price)
   }
 
-  let itemData = await botController.executeJob(link).catch(err => {
+  let itemData = await botController.executeJob(link).catch((err) => {
     logger.debug(err)
   })
-  
-  if(!itemData){
+
+  if (!itemData) {
     logger.warn('ItemData not recieved from steam, item %s', link.getParams().a)
     ctxError(ctx, errors.TTLExceeded)
     return next()
