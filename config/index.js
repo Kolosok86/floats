@@ -28,6 +28,12 @@ const conf = convict({
     default: 'postgres://postgres:postgres@localhost:5432/example?sslmode=disable',
     env: 'POSTGRES_URL',
   },
+  rate_limit: {
+    doc: 'Rate limit to user per minute',
+    format: 'int',
+    default: 1,
+    env: 'RATE_LIMIT',
+  }
 })
 
 conf.validate()

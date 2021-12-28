@@ -24,13 +24,9 @@ class Error {
 }
 
 module.exports = {
-  BadParams: new Error('Improper Parameter Structure', 1, 400),
-  InvalidInspect: new Error('Invalid Inspect Link Structure', 2, 400),
-  MaxRequests: new Error(`You have too many pending requests`, 3, 400),
-  TTLExceeded: new Error(`Valve's servers didn't reply in time`, 4, 500),
-  SteamOffline: new Error(`Valve's servers appear to be offline, please try again later`, 5, 503),
-  GenericBad: new Error('Something went wrong on our end, please try again', 6, 500),
-  BadBody: new Error('Improper body format', 7, 400),
-  NoBotsAvailable: new Error('No bots available to fulfill this request', 8, 500),
-  RateLimit: new Error('Rate limit exceeded, too many requests', 9, 429),
+  InvalidInspect: new Error('Invalid Inspect Link Structure', 1, 400),
+  TTLExceeded: new Error(`Valve's servers didn't reply in time`, 2, 500),
+  SteamOffline: new Error(`Valve's servers appear to be offline, please try again later`, 3, 503),
+  NoBotsAvailable: new Error('No bots available to fulfill this request', 4, 500),
+  RateLimit: new Error('Rate limit exceeded, too many requests', 5, 429),
 }

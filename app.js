@@ -4,6 +4,7 @@ const { InspectURL } = require('./components/inspect_url')
 const errorHandler = require('koa-better-error-handler')
 const { BotController } = require('./components/bot_controller')
 const { ctxError, respond, removeNullValues, canSubmitPrice } = require('./services/utils')
+const middlewares = require('./middlewares')
 const { GameData } = require('./components/game_data')
 const logger = require('./services/logger')
 const { Postgres } = require('./components/database')
@@ -60,7 +61,15 @@ async function handleJob(ctx, next) {
     price = parseInt(ctx?.query?.price)
   }
 
-  let itemData = await botController.executeJob(link)
+  let itemData = await botController.executeJob(link).catch(err => {
+    logger.debug(err)
+  })
+  
+  if(!itemData){
+    logger.warn('ItemData not recieved from steam, item %s', link.getParams().a)
+    ctxError(ctx, errors.TTLExceeded)
+    return next()
+  }
 
   logger.debug(`Received itemData for ${link.getParams().a}`)
 
@@ -78,6 +87,7 @@ async function handleJob(ctx, next) {
   await next()
 }
 
+app.use(middlewares())
 app.use(router.routes())
 
 app.on('error', (err, ctx) => {

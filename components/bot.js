@@ -163,7 +163,7 @@ class Bot {
       }
 
       if (!this.ready) {
-        reject('This bot is not ready')
+        reject(new Error('This bot is not ready'))
       } else {
         // The first param (owner) depends on the type of inspect link
         this.csgoClient.inspectItem(params.s !== '0' ? params.s : params.m, params.a, params.d)
@@ -173,7 +173,7 @@ class Bot {
         // GC didn't respond in time, reset and reject
         this.busy = false
         this.currentRequest = false
-        reject('ttl exceeded')
+        reject(new Error('ttl exceeded'))
       }, 2000)
     })
   }

@@ -1,6 +1,6 @@
 const bots = require('../constants/bots.json')
 const { default: PQueue } = require('p-queue')
-const promiseRetry = require('promise-retry')
+const pRetry = require('p-retry')
 const errors = require('./errors')
 const { Bot } = require('./bot')
 
@@ -11,7 +11,7 @@ class BotController {
     const queue = new PQueue({
       concurrency: 1,
       intervalCap: 1,
-      interval: 3000,
+      interval: 1500,
     })
 
     for (let bot of bots) {
@@ -42,7 +42,7 @@ class BotController {
   }
 
   executeJob(data) {
-    return promiseRetry(() => this.lookupFloat(data), {
+    return pRetry(() => this.lookupFloat(data), {
       minTimeout: 0,
       retries: 3,
     })
