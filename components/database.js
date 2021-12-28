@@ -81,9 +81,9 @@ class Postgres {
 
       item.stickers = item.stickers || []
       item.stickers = item.stickers.map((s) => ({
+        wear: s.w || 1,
         stickerId: s.i,
         slot: s.s,
-        wear: s.w,
       }))
 
       item = Object.assign(Postgres.extractProperties(item.props), item)

@@ -120,6 +120,12 @@ class Bot {
           delete sticker.sticker_id
         }
 
+        itemData.stickers = itemData.stickers || []
+        // prettier-ignore
+        itemData.stickers = itemData.stickers.map((sticker) => ({
+          ...sticker, wear: sticker.wear || 1,
+        }))
+
         this.resolve(itemData)
         this.resolve = false
         this.currentRequest = false
