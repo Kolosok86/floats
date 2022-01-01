@@ -6,7 +6,8 @@
   "scripts": {
     "develop": "nodemon --ignore ./game_files app.js",
     "eslint:fix": "eslint . --ext .js --fix",
-    "prettier": "prettier --write '**/*.{js,jsx,css,html}'"
+    "prettier": "prettier --write '**/*.{js,jsx,css,html}'",
+    "pm2": "pm2 start app.js --name \"floats\" --max-memory-restart 300M"
   },
   "author": "kolosok86",
   "license": "ISC",
