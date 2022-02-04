@@ -25,7 +25,7 @@ module.exports.helmet = {
 
 module.exports.ratelimit = {
   errorMessage: errors.RateLimit,
-  id: (ctx) => ctx.ip,
+  id: (ctx) => ctx.request.headers['x-real-ip'] || ctx.ip,
   disableHeader: true,
   duration: 60000,
   max: rate,
