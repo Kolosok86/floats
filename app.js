@@ -66,7 +66,7 @@ async function handleJob(ctx, next) {
   })
 
   if (!itemData) {
-    logger.warn('ItemData not recieved from steam, item %s', link.getParams().a)
+    logger.warn('ItemData not received from steam, item %s', link.getParams().a)
     ctxError(ctx, errors.TTLExceeded)
     return next()
   }
