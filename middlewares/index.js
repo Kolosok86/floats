@@ -1,4 +1,4 @@
-import * as opts from "./options.js";
+import * as opts from "../constants/options.js";
 import convert from 'koa-convert';
 import logger from "koa-logger";
 import ratelimit from "koa-ratelimit";
