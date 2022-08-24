@@ -3,7 +3,7 @@ game_files/*
 logs/*
 .idea/*
 
-constants/bots.json
+constants/bots.js
 
 # misc
 .DS_Store

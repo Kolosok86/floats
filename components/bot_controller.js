@@ -1,10 +1,10 @@
-const bots = require('../constants/bots.json')
-const { default: PQueue } = require('p-queue')
-const pRetry = require('p-retry')
-const errors = require('./errors')
-const { Bot } = require('./bot')
+import bots from "../constants/bots.js";
+import * as errors from "./errors.js";
+import PQueue from 'p-queue';
+import pRetry from "p-retry";
+import { Bot } from "./bot.js";
 
-class BotController {
+export class BotController {
   constructor() {
     this.bots = []
 
@@ -54,8 +54,4 @@ class BotController {
     if (freeBot) return freeBot.sendFloatRequest(data)
     else return Promise.reject(errors.NoBotsAvailable)
   }
-}
-
-module.exports = {
-  BotController,
 }

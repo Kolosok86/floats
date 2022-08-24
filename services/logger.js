@@ -1,5 +1,5 @@
-const winston = require('winston')
-const conf = require('../config')
+import { conf } from "../config/index.js";
+import winston from "winston";
 
 const { createLogger, format, transports } = winston
 const { combine, timestamp, printf, colorize, splat, json, errors } = format
@@ -33,4 +33,6 @@ const logger = createLogger({
   exitOnError: true,
 })
 
-module.exports = logger
+export {
+  logger
+}

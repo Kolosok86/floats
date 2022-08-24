@@ -1,7 +1,7 @@
-const { setIntervalCustom, downloadFile, isValidDir } = require('../services/utils')
-const logger = require('../services/logger')
-const vdf = require('simple-vdf')
-const fs = require('fs')
+import { downloadFile, isValidDir, setIntervalCustom } from "../services/utils.js";
+import { logger } from "../services/logger.js";
+import vdf from "simple-vdf";
+import fs from "fs";
 
 const floatNames = [
   {
@@ -35,7 +35,7 @@ const LanguageHandler = {
   },
 }
 
-class GameData {
+export class GameData {
   constructor() {
     this.items_game_url =
       'https://raw.githubusercontent.com/SteamDatabase/GameTracking-CSGO/master/csgo/scripts/items/items_game.txt'
@@ -329,8 +329,4 @@ class GameData {
 
     return name.trim()
   }
-}
-
-module.exports = {
-  GameData,
 }

@@ -1,10 +1,9 @@
-const { compose } = require('koa-convert')
-const logger = require('koa-logger')
-const helmet = require('koa-helmet')
-const ratelimit = require('koa-ratelimit')
+import * as opts from "./options.js";
+import convert from 'koa-convert';
+import logger from "koa-logger";
+import ratelimit from "koa-ratelimit";
+import helmet from "koa-helmet";
 
-const opts = require('./options')
+const middlewares = [logger(opts.log), ratelimit(opts.ratelimit), helmet(opts.helmet)]
 
-const middlewares = [logger(opts.logger), ratelimit(opts.ratelimit), helmet(opts.helmet)]
-
-module.exports = () => compose(middlewares)
+export default () => convert.compose(middlewares)

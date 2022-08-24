@@ -1,4 +1,4 @@
-[
+export default [
   {
     "user": "username",
     "pass": "pass",

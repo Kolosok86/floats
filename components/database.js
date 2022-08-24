@@ -1,12 +1,14 @@
-const logger = require('../services/logger')
-const utils = require('../services/utils')
-const conf = require('../config')
-const queries = require('../queries')
-const { Pool } = require('pg')
+import * as queries from "../queries/index.js";
+import { logger } from "../services/logger.js";
+import * as utils from "../services/utils.js";
+import { conf } from "../config/index.js";
+import pkg from 'pg';
+
+const { Pool } = pkg;
 
 const POSTGRES_URL = conf.get('postgres')
 
-class Postgres {
+export class Postgres {
   constructor() {
     this.pool = new Pool({
       connectionString: POSTGRES_URL,
@@ -261,8 +263,4 @@ class Postgres {
   updateItemPrice(assetId, price) {
     this.pool.query(queries.price, [price, assetId])
   }
-}
-
-module.exports = {
-  Postgres,
 }

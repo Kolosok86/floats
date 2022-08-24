@@ -1,8 +1,8 @@
-const ms = require('ms')
-const https = require('https')
-const fs = require('fs')
+import ms from "ms";
+import https from "https";
+import fs from "fs";
 
-function setIntervalCustom(_callback, _delay) {
+export function setIntervalCustom(_callback, _delay) {
   if (typeof _delay === 'string') {
     _delay = ms(_delay)
   }
@@ -11,7 +11,7 @@ function setIntervalCustom(_callback, _delay) {
   return setInterval(_callback, _delay)
 }
 
-function isValidDir(path) {
+export function isValidDir(path) {
   try {
     return fs.statSync(path).isDirectory()
   } catch (e) {
@@ -19,11 +19,11 @@ function isValidDir(path) {
   }
 }
 
-function isOnlyDigits(num) {
+export function isOnlyDigits(num) {
   return /^\d+$/.test(num)
 }
 
-function downloadFile(url, cb) {
+export function downloadFile(url, cb) {
   https.get(url, function (res) {
     let errored = false
 
@@ -50,17 +50,17 @@ function downloadFile(url, cb) {
   })
 }
 
-function unsigned64ToSigned(num) {
+export function unsigned64ToSigned(num) {
   const mask = 1n << 63n
   return (BigInt(num) ^ mask) - mask
 }
 
-function signed64ToUnsigned(num) {
+export function signed64ToUnsigned(num) {
   const mask = 1n << 63n
   return (BigInt(num) + mask) ^ mask
 }
 
-function isSteamId64(id) {
+export function isSteamId64(id) {
   id = BigInt(id)
   const universe = id >> 56n
   if (universe > 5n) return false
@@ -71,7 +71,7 @@ function isSteamId64(id) {
   return instance <= 32n
 }
 
-function removeNullValues(obj) {
+export function removeNullValues(obj) {
   return Object.keys(obj).reduce((result, key) => {
     if (key in obj && obj[key] !== null) {
       result[key] = obj[key]
@@ -81,43 +81,27 @@ function removeNullValues(obj) {
   }, {})
 }
 
-function getFloat(data) {
+export function getFloat(data) {
   const buf = Buffer.alloc(4)
   buf.writeFloatBE(data, 0)
   return buf.readInt32BE(0)
 }
 
-function readFloat(data) {
+export function readFloat(data) {
   const buf = Buffer.alloc(4)
   buf.writeInt32BE(data, 0)
   return buf.readFloatBE(0)
 }
 
-function canSubmitPrice(link, price) {
+export function canSubmitPrice(link, price) {
   return price && link.isMarketLink() && isOnlyDigits(price)
 }
 
-function respond(ctx, data, status = 200) {
+export function respond(ctx, data, status = 200) {
   ctx.status = status
   ctx.body = data
 }
 
-function ctxError(ctx, error) {
+export function ctxError(ctx, error) {
   respond(ctx, error.getJSON(), error.statusCode)
-}
-
-module.exports = {
-  setIntervalCustom,
-  downloadFile,
-  isValidDir,
-  isOnlyDigits,
-  canSubmitPrice,
-  unsigned64ToSigned,
-  signed64ToUnsigned,
-  removeNullValues,
-  isSteamId64,
-  getFloat,
-  readFloat,
-  respond,
-  ctxError,
 }

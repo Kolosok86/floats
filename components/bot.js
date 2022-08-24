@@ -1,10 +1,10 @@
-const SteamUser = require('steam-user')
-const GlobalOffensive = require('globaloffensive')
-const logger = require('../services/logger')
-const SteamTotp = require('steam-totp')
-const ms = require('ms')
+import SteamUser from "steam-user";
+import GlobalOffensive from "globaloffensive";
+import { logger } from "../services/logger.js";
+import SteamTotp from "steam-totp";
+import ms from "ms";
 
-class Bot {
+export class Bot {
   constructor(loginData) {
     this.ready = false
     this.busy = false
@@ -187,8 +187,4 @@ class Bot {
       }, 2000)
     })
   }
-}
-
-module.exports = {
-  Bot,
 }

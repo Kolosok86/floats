@@ -1,13 +1,13 @@
-const errors = require('../components/errors')
-const logger = require('../services/logger')
-const Redis = require('ioredis')
-const conf = require('../config')
+import * as errors from "../components/errors.js";
+import { logger } from "../services/logger.js";
+import { conf } from "../config/index.js";
+import Redis from "ioredis";
 
 const rate = conf.get('rate_limit')
 
 const redis = new Redis()
 
-module.exports.helmet = {
+export const helmet = {
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: true,
   expectCt: false,
@@ -21,9 +21,9 @@ module.exports.helmet = {
   noSniff: true,
   referrerPolicy: false,
   xssFilter: true,
-}
+};
 
-module.exports.ratelimit = {
+export const ratelimit = {
   errorMessage: errors.RateLimit,
   id: (ctx) => ctx.request.headers['x-real-ip'] || ctx.ip,
   disableHeader: true,
@@ -31,10 +31,10 @@ module.exports.ratelimit = {
   max: rate,
   driver: 'redis',
   db: redis,
-}
+};
 
-module.exports.logger = {
+export const log = {
   transporter: (str, args) => {
     logger.debug(str, args)
   },
-}
+};

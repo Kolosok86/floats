@@ -1,16 +1,16 @@
-const Koa = require('koa')
+import Koa from "koa";
 
-const { InspectURL } = require('./components/inspect_url')
-const errorHandler = require('koa-better-error-handler')
-const { BotController } = require('./components/bot_controller')
-const { ctxError, respond, removeNullValues, canSubmitPrice } = require('./services/utils')
-const middlewares = require('./middlewares')
-const { GameData } = require('./components/game_data')
-const logger = require('./services/logger')
-const { Postgres } = require('./components/database')
-const errors = require('./components/errors')
-const Router = require('koa-router')
-const conf = require('./config')
+import errorHandler from "koa-better-error-handler";
+import { BotController } from "./components/bot_controller.js";
+import { canSubmitPrice, ctxError, removeNullValues, respond } from "./services/utils.js";
+import { InspectURL } from "./components/inspect_url.js";
+import middlewares from "./middlewares/index.js";
+import { GameData } from "./components/game_data.js";
+import { logger } from "./services/logger.js";
+import { Postgres } from "./components/database.js";
+import * as errors from "./components/errors.js";
+import { conf } from "./config/index.js";
+import Router from "koa-router";
 
 const PORT = conf.get('port')
 

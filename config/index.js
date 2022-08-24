@@ -1,5 +1,5 @@
-const dotenv = require('dotenv')
-const convict = require('convict')
+import convict from "convict";
+import dotenv from "dotenv";
 
 dotenv.config()
 
@@ -38,4 +38,6 @@ const conf = convict({
 
 conf.validate()
 
-module.exports = conf
+export {
+  conf
+}

@@ -1,6 +1,6 @@
-const { isOnlyDigits } = require('../services/utils')
+import { isOnlyDigits } from "../services/utils.js";
 
-class InspectURL {
+export class InspectURL {
   constructor(url) {
     this.requiredParams = ['s', 'a', 'd', 'm']
 
@@ -50,8 +50,4 @@ class InspectURL {
   isMarketLink() {
     return this.valid && this.m !== '0'
   }
-}
-
-module.exports = {
-  InspectURL,
 }
