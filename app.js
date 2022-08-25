@@ -1,16 +1,16 @@
-import Koa from "koa";
+import Koa from 'koa'
 
-import errorHandler from "koa-better-error-handler";
-import { Controller } from "./components/controller.js";
-import { canSubmitPrice, ctxError, removeNullValues, respond } from "./services/utils.js";
-import { InspectURL } from "./components/inspect_url.js";
-import middlewares from "./middlewares/index.js";
-import { GameData } from "./components/game_data.js";
-import { logger } from "./services/logger.js";
-import { Postgres } from "./components/database.js";
-import * as errors from "./components/errors.js";
-import { conf } from "./config/index.js";
-import Router from "koa-router";
+import errorHandler from 'koa-better-error-handler'
+import { Controller } from './components/controller.js'
+import { canSubmitPrice, ctxError, removeNullValues, respond } from './services/utils.js'
+import { InspectURL } from './components/inspect_url.js'
+import middlewares from './middlewares/index.js'
+import { GameData } from './components/game_data.js'
+import { logger } from './services/logger.js'
+import { Postgres } from './components/database.js'
+import * as errors from './components/errors.js'
+import { conf } from './config/index.js'
+import Router from 'koa-router'
 
 const PORT = conf.get('port')
 

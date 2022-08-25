@@ -1,8 +1,8 @@
-import SteamUser from "steam-user";
-import GlobalOffensive from "globaloffensive";
-import { logger } from "../services/logger.js";
-import SteamTotp from "steam-totp";
-import ms from "ms";
+import SteamUser from 'steam-user'
+import GlobalOffensive from 'globaloffensive'
+import { logger } from '../services/logger.js'
+import SteamTotp from 'steam-totp'
+import ms from 'ms'
 
 export class Bot {
   constructor(loginData) {

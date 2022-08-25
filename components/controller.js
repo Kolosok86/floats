@@ -1,8 +1,8 @@
-import bots from "../constants/bots.js";
-import * as errors from "./errors.js";
-import PQueue from 'p-queue';
-import pRetry from "p-retry";
-import { Bot } from "./bot.js";
+import bots from '../constants/bots.js'
+import * as errors from './errors.js'
+import PQueue from 'p-queue'
+import pRetry from 'p-retry'
+import { Bot } from './bot.js'
 
 export class Controller {
   constructor() {

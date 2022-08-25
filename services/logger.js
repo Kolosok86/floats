@@ -1,5 +1,5 @@
-import { conf } from "../config/index.js";
-import winston from "winston";
+import { conf } from '../config/index.js'
+import winston from 'winston'
 
 const { createLogger, format, transports } = winston
 const { combine, timestamp, printf, colorize, splat, json, errors } = format
@@ -33,6 +33,4 @@ const logger = createLogger({
   exitOnError: true,
 })
 
-export {
-  logger
-}
+export { logger }

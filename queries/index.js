@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from 'fs'
 
 function get(path) {
   return fs.readFileSync(path, 'UTF-8')

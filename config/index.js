@@ -1,5 +1,5 @@
-import convict from "convict";
-import dotenv from "dotenv";
+import convict from 'convict'
+import dotenv from 'dotenv'
 
 dotenv.config()
 
@@ -38,6 +38,4 @@ const conf = convict({
 
 conf.validate()
 
-export {
-  conf
-}
+export { conf }

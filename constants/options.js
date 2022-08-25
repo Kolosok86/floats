@@ -1,7 +1,7 @@
-import * as errors from "../components/errors.js";
-import { logger } from "../services/logger.js";
-import { conf } from "../config/index.js";
-import Redis from "ioredis";
+import * as errors from '../components/errors.js'
+import { logger } from '../services/logger.js'
+import { conf } from '../config/index.js'
+import Redis from 'ioredis'
 
 const rate = conf.get('rate_limit')
 
@@ -21,7 +21,7 @@ export const helmet = {
   noSniff: true,
   referrerPolicy: false,
   xssFilter: true,
-};
+}
 
 export const ratelimit = {
   errorMessage: errors.RateLimit,
@@ -31,10 +31,10 @@ export const ratelimit = {
   max: rate,
   driver: 'redis',
   db: redis,
-};
+}
 
 export const log = {
   transporter: (str, args) => {
     logger.debug(str, args)
   },
-};
+}

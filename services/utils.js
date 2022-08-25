@@ -1,6 +1,6 @@
-import ms from "ms";
-import https from "https";
-import fs from "fs";
+import ms from 'ms'
+import https from 'https'
+import fs from 'fs'
 
 export function setIntervalCustom(_callback, _delay) {
   if (typeof _delay === 'string') {

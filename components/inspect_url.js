@@ -1,4 +1,4 @@
-import { isOnlyDigits } from "../services/utils.js";
+import { isOnlyDigits } from '../services/utils.js'
 
 export class InspectURL {
   constructor(url) {
