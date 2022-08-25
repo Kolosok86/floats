@@ -1,7 +1,7 @@
 import Koa from "koa";
 
 import errorHandler from "koa-better-error-handler";
-import { BotController } from "./components/bot_controller.js";
+import { Controller } from "./components/controller.js";
 import { canSubmitPrice, ctxError, removeNullValues, respond } from "./services/utils.js";
 import { InspectURL } from "./components/inspect_url.js";
 import middlewares from "./middlewares/index.js";
@@ -15,7 +15,7 @@ import Router from "koa-router";
 const PORT = conf.get('port')
 
 const app = new Koa()
-const botController = new BotController()
+const botController = new Controller()
 const db = new Postgres()
 const gameData = new GameData()
 

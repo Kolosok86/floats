@@ -1,25 +1,8 @@
 class Error {
   constructor(message, internalCode, statusCode) {
-    this.message = message
+    this.status = statusCode
     this.code = internalCode
-    this.statusCode = statusCode
-  }
-
-  getJSON() {
-    return {
-      error: this.message,
-      code: this.code,
-      status: this.statusCode,
-    }
-  }
-
-  respond(ctx) {
-    ctx.status = this.statusCode
-    ctx.body = this.getJSON()
-  }
-
-  toString() {
-    return `[Code ${this.code}] - ${this.message}`
+    this.error = message
   }
 }
 

@@ -103,5 +103,5 @@ export function respond(ctx, data, status = 200) {
 }
 
 export function ctxError(ctx, error) {
-  respond(ctx, error.getJSON(), error.statusCode)
+  respond(ctx, error, error.status)
 }

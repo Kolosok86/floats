@@ -4,7 +4,7 @@ import PQueue from 'p-queue';
 import pRetry from "p-retry";
 import { Bot } from "./bot.js";
 
-export class BotController {
+export class Controller {
   constructor() {
     this.bots = []
 
