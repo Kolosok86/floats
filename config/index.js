@@ -22,11 +22,11 @@ const conf = convict({
     default: 80,
     env: 'PORT',
   },
-  postgres: {
-    doc: 'URL to db.',
+  mongo: {
+    doc: 'Url to mongo db',
     format: String,
-    default: 'postgres://postgres:postgres@localhost:5432/example?sslmode=disable',
-    env: 'POSTGRES_URL',
+    default: 'mongodb://localhost:27017/example?authSource=admin',
+    env: 'MONGO',
   },
   rate_limit: {
     doc: 'Rate limit to user per minute',

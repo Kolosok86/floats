@@ -1,4 +1,4 @@
-import { downloadFile, isValidDir, setIntervalCustom } from '../services/utils.js'
+import { downloadFile, isValidDir, setIntervalCustom } from '../utils/index.js'
 import { logger } from '../services/logger.js'
 import vdf from 'simple-vdf'
 import fs from 'fs'

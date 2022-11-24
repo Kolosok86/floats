@@ -1,6 +1,7 @@
-import SteamUser from 'steam-user'
+import { getRandomVariance } from '../utils/index.js'
 import GlobalOffensive from 'globaloffensive'
 import { logger } from '../services/logger.js'
+import SteamUser from 'steam-user'
 import SteamTotp from 'steam-totp'
 import ms from 'ms'
 
@@ -16,44 +17,26 @@ export class Bot {
     this.steamClient = new SteamUser()
     this.csgoClient = new GlobalOffensive(this.steamClient)
 
-    const variance = parseInt(Math.random() * 4 * 60 * 1000)
+    const variance = getRandomVariance()
+    const time = ms('45m') + variance
+
+    this.bindEventHandlers()
 
     setInterval(() => {
       this.csgoClient.refreshSession()
-    }, 45 * 60000 + variance)
-
-    this.bindEventHandlers()
-    this.logIn()
+    }, time)
   }
 
   logIn() {
-    logger.info(`Logging in ${this.username}`)
-
-    logger.debug(`${this.username} Generating TOTP Code from shared_secret`)
-    let code = SteamTotp.getAuthCode(this.auth)
-
-    let loginData = {
+    const loginData = {
+      twoFactorCode: SteamTotp.getAuthCode(this.auth),
       accountName: this.username,
       password: this.password,
-      twoFactorCode: code,
     }
 
-    logger.debug(`${this.username} About to connect`)
+    logger.info(`Logging in ${this.username}`)
 
     this.steamClient.logOn(loginData)
-  }
-
-  addGame() {
-    this.steamClient.requestFreeLicense([730], (err, grantedPackages, grantedAppIDs) => {
-      logger.debug(`${this.username} Granted Packages`, grantedPackages)
-      logger.debug(`${this.username} Granted App IDs`, grantedAppIDs)
-
-      if (err) {
-        logger.error(`${this.username} Failed to obtain free CS:GO license`)
-      } else {
-        this.steamClient.gamesPlayed([730], true)
-      }
-    })
   }
 
   bindEventHandlers() {
@@ -76,7 +59,7 @@ export class Bot {
 
       setTimeout(() => {
         this.steamClient.gamesPlayed([730], true)
-      }, 2500)
+      }, 3000)
     })
 
     this.csgoClient.on('inspectItemInfo', (itemData) => {
@@ -106,13 +89,10 @@ export class Bot {
         // If the paintseed is 0, the proto returns null, force 0
         itemData.paintseed = itemData.paintseed || 0
 
-        // paintwear -> floatvalue to match previous API version response
-        itemData.floatvalue = itemData.paintwear
-
         // delete unused
-        delete itemData.paintwear
         delete itemData.itemid
         delete itemData.inventory
+        delete itemData.accountid
 
         // Backwards compatibility with previous node-globaloffensive versions
         for (const sticker of itemData.stickers) {
@@ -162,6 +142,7 @@ export class Bot {
       this.busy = true
 
       const params = link.getParams()
+
       logger.debug(`${this.username} Fetching for ${params.a}`)
 
       this.currentRequest = {

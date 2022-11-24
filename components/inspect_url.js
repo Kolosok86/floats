@@ -1,4 +1,4 @@
-import { isOnlyDigits } from '../services/utils.js'
+import { isOnlyDigits } from '../utils/index.js'
 
 export class InspectURL {
   constructor(url) {
@@ -45,9 +45,5 @@ export class InspectURL {
 
   getParams() {
     if (this.valid) return { s: this.s, a: this.a, d: this.d, m: this.m }
-  }
-
-  isMarketLink() {
-    return this.valid && this.m !== '0'
   }
 }

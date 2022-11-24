@@ -2,13 +2,12 @@ import { conf } from '../config/index.js'
 import winston from 'winston'
 
 const { createLogger, format, transports } = winston
-const { combine, timestamp, printf, colorize, splat, json, errors } = format
+const { combine, timestamp, printf, colorize } = format
+const { splat, json, errors } = format
 
 const myFormat = printf((info) => {
-  return `${info.timestamp} [${info.level}]: ${info.message}${info.stack || ''}`
+  return `${info.timestamp} [${info.level}]: ${info.message}${info?.stack || ''}`
 })
-
-const level = conf.get('logLevel') || 'debug'
 
 const options = {
   level: 'error',
@@ -19,18 +18,21 @@ const options = {
   maxFiles: 5,
 }
 
-const logger = createLogger({
-  level: level,
+export const logger = createLogger({
+  level: conf.get('logLevel'),
+  exitOnError: true,
   format: combine(
+    timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     errors({ stack: true }),
     splat(),
-    colorize(),
-    timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     json(),
+    colorize(),
     myFormat
   ),
-  transports: [new transports.Console({ handleExceptions: true }), new transports.File(options)],
-  exitOnError: true,
+  transports: [
+    new transports.File(options),
+    new transports.Console({
+      handleExceptions: true,
+    }),
+  ],
 })
-
-export { logger }

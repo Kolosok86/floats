@@ -1,1 +1,0 @@
-UPDATE items SET price = $1 WHERE a = $2

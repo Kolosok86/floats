@@ -1,28 +1,32 @@
-import bots from '../constants/bots.js'
-import * as errors from './errors.js'
-import PQueue from 'p-queue'
-import pRetry from 'p-retry'
+import * as errors from '../constants/errors.js'
 import { Bot } from './bot.js'
+import pRetry from 'p-retry'
+import PQueue from 'p-queue'
 
 export class Controller {
   constructor() {
     this.bots = []
+  }
 
+  addBots(bots) {
     const queue = new PQueue({
       concurrency: 1,
       intervalCap: 1,
       interval: 1500,
     })
 
-    for (let bot of bots) {
-      queue.add(() => {
-        this.addBot(bot)
-      })
-    }
+    const data = bots.map((e) => () => {
+      return this.addBot(e)
+    })
+
+    queue.addAll(data)
   }
 
-  addBot(loginData) {
-    this.bots.push(new Bot(loginData))
+  async addBot(data) {
+    const bot = new Bot(data)
+    bot.logIn()
+
+    this.bots.push(bot)
   }
 
   getFreeBot() {
@@ -41,14 +45,14 @@ export class Controller {
     return false
   }
 
-  executeJob(data) {
-    return pRetry(() => this.lookupFloat(data), {
+  execute(data) {
+    return pRetry(() => this.lookup(data), {
       minTimeout: 0,
       retries: 3,
     })
   }
 
-  lookupFloat(data) {
+  lookup(data) {
     let freeBot = this.getFreeBot()
 
     if (freeBot) return freeBot.sendFloatRequest(data)

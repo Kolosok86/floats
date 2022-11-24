@@ -1,4 +1,4 @@
-import * as errors from '../components/errors.js'
+import * as errors from '../constants/errors.js'
 import { logger } from '../services/logger.js'
 import { conf } from '../config/index.js'
 import Redis from 'ioredis'
@@ -25,7 +25,7 @@ export const helmet = {
 
 export const ratelimit = {
   errorMessage: errors.RateLimit,
-  id: (ctx) => ctx.request.headers['x-real-ip'] || ctx.ip,
+  id: (ctx) => ctx?.request?.headers['x-real-ip'] || ctx?.ip,
   disableHeader: true,
   duration: 60000,
   max: rate,
