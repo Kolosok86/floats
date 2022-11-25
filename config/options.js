@@ -1,6 +1,6 @@
 import * as errors from '../constants/errors.js'
 import { logger } from '../services/logger.js'
-import { conf } from '../config/index.js'
+import { conf } from './index.js'
 import Redis from 'ioredis'
 
 const rate = conf.get('rate_limit')

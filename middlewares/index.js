@@ -1,4 +1,4 @@
-import * as opts from '../constants/options.js'
+import * as opts from '../config/options.js'
 import { errorHandler } from './errorHandler.js'
 import convert from 'koa-convert'
 import logger from 'koa-logger'
