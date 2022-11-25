@@ -25,8 +25,14 @@ const conf = convict({
   mongo: {
     doc: 'Url to mongo db',
     format: String,
-    default: 'mongodb://localhost:27017/example?authSource=admin',
+    default: 'mongodb://mongo:27017/floats?authSource=admin',
     env: 'MONGO',
+  },
+  redis: {
+    doc: 'Url to redis',
+    format: String,
+    default: 'redis://redis:6379',
+    env: 'REDIS',
   },
   rate_limit: {
     doc: 'Rate limit to user per minute',

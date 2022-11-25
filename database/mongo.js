@@ -1,6 +1,6 @@
 import { conf } from '../config/index.js'
 import { logger } from '../services/logger.js'
-import ItemsModel from '../models/items.js'
+import ItemsModel from '../models/Items.js'
 import mongoose from 'mongoose'
 
 const MONGO = conf.get('mongo')

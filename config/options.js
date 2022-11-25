@@ -4,8 +4,9 @@ import { conf } from './index.js'
 import Redis from 'ioredis'
 
 const rate = conf.get('rate_limit')
+const redisUrl = conf.get('redis')
 
-const redis = new Redis()
+const redis = new Redis(redisUrl)
 
 export const helmet = {
   contentSecurityPolicy: false,
@@ -24,7 +25,7 @@ export const helmet = {
 }
 
 export const ratelimit = {
-  errorMessage: errors.RateLimit,
+  errorMessage: errors.RateLimit.msg,
   id: (ctx) => ctx?.request?.headers['x-real-ip'] || ctx?.ip,
   disableHeader: true,
   duration: 60000,

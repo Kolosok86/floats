@@ -1,0 +1,30 @@
+version: '3'
+services:
+  node:
+    env_file: .env
+    restart: always
+    build: .
+    ports:
+      - 4500:4500
+    networks:
+      - internal
+      - default
+    volumes:
+      - ./:/code
+  mongo:
+    image: mongo
+    restart: always
+    networks:
+      - default
+  redis:
+    image: "redis:alpine"
+    restart: always
+    networks:
+      - default
+volumes:
+  mongodb:
+
+networks:
+  internal:
+    driver: internal
+    external: true
