@@ -262,7 +262,7 @@ export class GameData {
 
       // Assumes weapons always have a float above 0 and that other items don't
       iteminfo['rarity_name'] =
-        this.csgo_english[rarity[iteminfo.floatvalue > 0 ? 'loc_key_weapon' : 'loc_key']]
+        this.csgo_english[rarity[iteminfo.paintwear > 0 ? 'loc_key_weapon' : 'loc_key']]
     }
 
     // Get the quality name (Souvenir, Stattrak, etc...)
@@ -280,7 +280,7 @@ export class GameData {
     }
 
     // Get the wear name
-    const wearName = this.getWearName(iteminfo.floatvalue)
+    const wearName = this.getWearName(iteminfo.paintwear)
     if (wearName) {
       iteminfo['wear_name'] = wearName
     }
