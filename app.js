@@ -6,7 +6,7 @@ import { conf } from './config/index.js'
 import middlewares from './middlewares/index.js'
 import { GameData } from './components/game_data.js'
 import { logger } from './services/logger.js'
-import bots from './constants/bots.js'
+import bots from './config/bots.js'
 import routes from './routes/index.js'
 
 const PORT = conf.get('port')
