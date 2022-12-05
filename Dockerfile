@@ -1,5 +1,5 @@
 FROM alpine:latest
-FROM node:18-alpine
+FROM node:19-alpine
 
 # Create app directory
 WORKDIR /app
