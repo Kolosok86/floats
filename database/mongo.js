@@ -19,10 +19,15 @@ mongoose.connection.on('error', (err) => {
   process.exit(1)
 })
 
-export function getItemData(link) {
-  return ItemsModel.findOne({ a: link.a }).lean()
+// prettier-ignore
+export function createItem(item) {
+  return ItemsModel.updateOne({
+    a: item.a,
+  }, item, {
+    upsert: true,
+  })
 }
 
-export function createItem(item) {
-  return ItemsModel.create(item)
+export function getItemData(link) {
+  return ItemsModel.findOne({ a: link.a }).lean()
 }
