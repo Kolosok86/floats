@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 
 const MONGO = conf.get('mongo')
 
+mongoose.set('strictQuery', true)
 mongoose.connect(MONGO, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
