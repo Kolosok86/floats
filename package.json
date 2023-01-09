@@ -13,7 +13,7 @@
   "author": "kolosok86",
   "license": "ISC",
   "dependencies": {
-    "convict": "^6.2.3",
+    "convict": "^6.2.4",
     "dotenv": "^16.0.3",
     "globaloffensive": "github:Kolosok86/node-globaloffensive",
     "ioredis": "^5.2.4",
