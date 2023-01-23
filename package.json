@@ -30,7 +30,7 @@
     "p-retry": "^5.1.2",
     "simple-vdf": "^1.1.1",
     "steam-totp": "^2.1.2",
-    "steam-user": "^4.26.0",
+    "steam-user": "^4.27.0",
     "winston": "^3.8.2"
   }
 }
