@@ -6,15 +6,23 @@ import SteamTotp from 'steam-totp'
 import ms from 'ms'
 
 export class Bot {
-  constructor(loginData) {
+  constructor({ user, pass, auth, proxy }) {
     this.ready = false
     this.busy = false
 
-    this.username = loginData.user
-    this.password = loginData.pass
-    this.auth = loginData.auth
+    this.username = user
+    this.password = pass
+    this.auth = auth
 
-    this.steamClient = new SteamUser()
+    const opts = {}
+
+    if (proxy?.startsWith('socks')) {
+      opts.socksProxy = proxy
+    } else if (proxy?.startsWith('http')) {
+      opts.httpProxy = proxy
+    }
+
+    this.steamClient = new SteamUser(opts)
     this.csgoClient = new GlobalOffensive(this.steamClient)
 
     const variance = getRandomVariance()
@@ -42,6 +50,19 @@ export class Bot {
   bindEventHandlers() {
     this.steamClient.on('error', (err) => {
       logger.error(`Error logging in ${this.username}:`, err)
+
+      if (err.toString().includes('Proxy Authentication')) {
+        this.ready = false
+        return
+      }
+
+      if (err.toString().includes('Proxy connection timed out')) {
+        setTimeout(() => {
+          this.logIn()
+        }, ms('3m'))
+
+        return
+      }
 
       setTimeout(() => {
         if (!this.steamClient.steamID) this.logIn()
