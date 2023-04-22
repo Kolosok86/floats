@@ -6,7 +6,7 @@ import SteamTotp from 'steam-totp'
 import ms from 'ms'
 
 export class Bot {
-  constructor({ user, pass, auth, proxy }) {
+  constructor({ user, pass, auth, proxy, addr }) {
     this.ready = false
     this.busy = false
 
@@ -20,6 +20,10 @@ export class Bot {
       opts.socksProxy = proxy
     } else if (proxy?.startsWith('http')) {
       opts.httpProxy = proxy
+    }
+
+    if (addr && !proxy) {
+      opts.localAddress = addr
     }
 
     this.steamClient = new SteamUser(opts)
