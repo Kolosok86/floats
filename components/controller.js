@@ -30,7 +30,7 @@ export class Controller {
   }
 
   getFreeBot() {
-    const bots = this.bots.map((bot) => !bot.busy && bot.ready)
+    const bots = this.bots.filter((bot) => !bot.busy && bot.ready)
     if (!bots.length) return false
 
     return bots[Math.floor(Math.random() * bots.length)]
