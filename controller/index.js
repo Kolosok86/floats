@@ -57,3 +57,10 @@ export async function handleFloatReq(ctx, next) {
   // insert item to mongo db
   await createItem(item)
 }
+
+export function getStats(ctx, next) {
+  const data = ctx.controller.getCount()
+
+  ctx.ok(data)
+  return next()
+}

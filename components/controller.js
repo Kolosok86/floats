@@ -66,6 +66,13 @@ export class Controller {
     })
   }
 
+  getCount() {
+    const online = this.bots.filter((e) => e.ready).length
+    const total = this.bots.length
+
+    return { online, total }
+  }
+
   lookup(data) {
     let freeBot = this.getFreeBot()
 
