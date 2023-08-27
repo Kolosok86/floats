@@ -6,25 +6,18 @@ services:
     build: .
     ports:
       - 4500:4500
-    networks:
-      - internal
-      - default
     volumes:
       - ./:/code
+    container_name: node-floats
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   mongo:
     image: mongo
     restart: always
-    networks:
-      - default
+    container_name: mongo-floats
   redis:
     image: "redis:alpine"
     restart: always
-    networks:
-      - default
+    container_name: redis-floats
 volumes:
   mongodb:
-
-networks:
-  internal:
-    driver: internal
-    external: true
