@@ -2,10 +2,25 @@ import * as errors from '../constants/errors.js'
 import { Bot } from './bot.js'
 import pRetry from 'p-retry'
 import PQueue from 'p-queue'
+import ms from 'ms'
 
 export class Controller {
   constructor() {
     this.bots = []
+  }
+
+  runJob(time) {
+    if (!this.bots.length) return
+
+    setInterval(() => {
+      this.updateSessions()
+    }, ms(time))
+  }
+
+  updateSessions() {
+    for (let bot of this.bots) {
+      bot.refreshSession()
+    }
   }
 
   addBots(bots) {

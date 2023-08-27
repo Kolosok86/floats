@@ -30,13 +30,9 @@ export class Bot {
     this.csgoClient = new GlobalOffensive(this.steamClient)
 
     const variance = getRandomVariance()
-    const time = ms('45m') + variance
+    this.timeStep = ms('45m') + variance
 
     this.bindEventHandlers()
-
-    setInterval(() => {
-      this.csgoClient.refreshSession()
-    }, time)
   }
 
   logIn() {
@@ -49,6 +45,22 @@ export class Bot {
     logger.info(`Logging in ${this.username}`)
 
     this.steamClient.logOn(loginData)
+  }
+
+  refreshSession() {
+    if (Date.now() < this.time) {
+      return
+    }
+
+    if (!this.ready) {
+      return
+    }
+
+    // update unix time
+    this.time = Date.now() + this.timeStep
+
+    // execute update
+    this.csgoClient.refreshSession()
   }
 
   bindEventHandlers() {
@@ -70,7 +82,7 @@ export class Bot {
 
       setTimeout(() => {
         if (!this.steamClient.steamID) this.logIn()
-      }, ms('2h'))
+      }, ms('1h'))
     })
 
     this.steamClient.on('disconnected', (eresult, msg) => {
@@ -119,12 +131,6 @@ export class Bot {
         delete itemData.inventory
         delete itemData.accountid
 
-        // Backwards compatibility with previous node-globaloffensive versions
-        for (const sticker of itemData.stickers) {
-          sticker.stickerId = sticker.sticker_id
-          delete sticker.sticker_id
-        }
-
         itemData.stickers = itemData.stickers || []
         // prettier-ignore
         itemData.stickers = itemData.stickers.map((sticker) => ({
@@ -155,14 +161,15 @@ export class Bot {
     this.csgoClient.on('connectionStatus', (status) => {
       logger.debug(`${this.username} GC Connection Status Update ${status}`)
     })
-
-    this.csgoClient.on('debug', (msg) => {
-      logger.debug(msg)
-    })
   }
 
   sendFloatRequest(link) {
     return new Promise((resolve, reject) => {
+      // check bot status
+      if (!this.ready || this.busy) {
+        reject(new Error('This bot is not ready or busy'))
+      }
+
       this.resolve = resolve
       this.busy = true
 
@@ -178,12 +185,8 @@ export class Bot {
         m: params.m,
       }
 
-      if (!this.ready) {
-        reject(new Error('This bot is not ready'))
-      } else {
-        // The first param (owner) depends on the type of inspect link
-        this.csgoClient.inspectItem(params.s !== '0' ? params.s : params.m, params.a, params.d)
-      }
+      // The first param (owner) depends on the type of inspect link
+      this.csgoClient.inspectItem(params.s !== '0' ? params.s : params.m, params.a, params.d)
 
       this.ttlTimeout = setTimeout(() => {
         // GC didn't respond in time, reset and reject

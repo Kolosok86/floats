@@ -38,11 +38,11 @@ const LanguageHandler = {
 export class GameData {
   constructor() {
     this.items_game_url =
-      'https://raw.githubusercontent.com/SteamDatabase/GameTracking-CSGO/master/csgo/scripts/items/items_game.txt'
+      'https://raw.githubusercontent.com/Kolosok86/csgo-schemas/main/items_game.txt'
     this.items_game_cdn_url =
-      'https://raw.githubusercontent.com/SteamDatabase/GameTracking-CSGO/master/csgo/scripts/items/items_game_cdn.txt'
+      'https://raw.githubusercontent.com/Kolosok86/csgo-schemas/main/items_game_cdn.txt'
     this.csgo_english_url =
-      'https://raw.githubusercontent.com/SteamDatabase/GameTracking-CSGO/master/csgo/resource/csgo_english.txt'
+      'https://raw.githubusercontent.com/SteamDatabase/GameTracking-CSGO/master/game/csgo/resource/csgo_english.txt'
     this.schema_url =
       'https://raw.githubusercontent.com/SteamDatabase/SteamTracking/b5cba7a22ab899d6d423380cff21cec707b7c947/ItemSchema/CounterStrikeGlobalOffensive.json'
 
@@ -164,7 +164,7 @@ export class GameData {
     // Get sticker codename/name
     const stickerKits = this.items_game.sticker_kits
     for (const sticker of iteminfo.stickers || []) {
-      const kit = stickerKits[sticker.stickerId]
+      const kit = stickerKits[sticker.sticker_id]
 
       if (!kit) continue
 

@@ -16,6 +16,7 @@ const controller = new Controller()
 const gameData = new GameData()
 
 controller.addBots(bots)
+controller.runJob('1m')
 
 app.use(setProperties(controller, gameData))
 app.use(middlewares())
