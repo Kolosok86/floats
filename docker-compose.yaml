@@ -8,16 +8,27 @@ services:
       - 4500:4500
     volumes:
       - ./:/code
-    container_name: node-floats
+    container_name: floats
+    networks:
+      - internal
     extra_hosts:
       - "host.docker.internal:host-gateway"
   mongo:
     image: mongo
     restart: always
-    container_name: mongo-floats
+    networks:
+      - internal
+    container_name: mongo
   redis:
     image: "redis:alpine"
     restart: always
-    container_name: redis-floats
+    networks:
+      - internal
+    container_name: redis
 volumes:
   mongodb:
+
+networks:
+  internal:
+    name: internal
+    external: true
