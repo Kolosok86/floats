@@ -6,10 +6,7 @@ import mongoose from 'mongoose'
 const MONGO = conf.get('mongo')
 
 mongoose.set('strictQuery', true)
-mongoose.connect(MONGO, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-})
+mongoose.connect(MONGO)
 
 mongoose.connection.on('open', () => {
   logger.info('Mongo database is ready!')
