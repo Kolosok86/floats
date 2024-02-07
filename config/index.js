@@ -28,18 +28,6 @@ const conf = convict({
     default: 'mongodb://mongo:27017/floats?authSource=admin',
     env: 'MONGO',
   },
-  redis: {
-    doc: 'Url to redis',
-    format: String,
-    default: 'redis://redis:6379',
-    env: 'REDIS',
-  },
-  rate_limit: {
-    doc: 'Rate limit to user per minute',
-    format: 'int',
-    default: 1,
-    env: 'RATE_LIMIT',
-  },
 })
 
 conf.validate()

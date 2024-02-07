@@ -19,12 +19,6 @@ services:
     networks:
       - internal
     container_name: mongo
-  redis:
-    image: "redis:alpine"
-    restart: always
-    networks:
-      - internal
-    container_name: redis
 volumes:
   mongodb:
 
