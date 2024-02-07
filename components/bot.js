@@ -148,6 +148,17 @@ export class Bot {
       }
     })
 
+    this.csgoClient.on('error', (error) => {
+      logger.warn(`${this.username} CSGO responded with error ${error}`)
+
+      this.ready = false
+
+      // attempt reconnect after 5 minute
+      setTimeout(() => {
+        this.refreshSession()
+      }, 5 * 60000)
+    })
+
     this.csgoClient.on('connectedToGC', () => {
       logger.info(`${this.username} CSGO Client Ready!`)
       this.ready = true
