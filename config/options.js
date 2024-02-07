@@ -1,4 +1,3 @@
-import * as errors from '../constants/errors.js'
 import { logger } from '../services/logger.js'
 
 export const helmet = {
