@@ -1,4 +1,3 @@
-import * as errors from '../constants/errors.js'
 import { Bot } from './bot.js'
 import pRetry from 'p-retry'
 import PQueue from 'p-queue'
@@ -77,6 +76,6 @@ export class Controller {
     let freeBot = this.getFreeBot()
 
     if (freeBot) return freeBot.sendFloatRequest(data)
-    else return Promise.reject(errors.NoBotsAvailable)
+    else return Promise.reject('NoBotsAvailable')
   }
 }

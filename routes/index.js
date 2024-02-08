@@ -1,4 +1,4 @@
-import { handleFloatReq, getStats } from '../controller/index.js'
+import { handleFloatReq, getHealth } from '../controllers/index.js'
 import Router from 'koa-router'
 import pkg from 'koa-convert'
 
@@ -9,6 +9,6 @@ const router = new Router({
 })
 
 router.get('/', (ctx, next) => handleFloatReq(ctx, next))
-router.get('/stats', (ctx, next) => getStats(ctx, next))
+router.get('/health', (ctx, next) => getHealth(ctx, next))
 
 export default () => compose([router.allowedMethods(), router.routes()])

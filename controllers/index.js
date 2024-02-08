@@ -2,8 +2,8 @@ import { InspectURL } from '../components/inspect_url.js'
 import { removeNullValues } from '../utils/index.js'
 import { getItemData, createItem } from '../database/mongo.js'
 import { throwError } from '../services/errors.js'
-import * as errors from '../constants/errors.js'
 import { logger } from '../services/logger.js'
+import os from 'os'
 
 function sendResp(ctx, next, result) {
   ctx.gameData.addAdditionalItemProperties(result)
@@ -22,14 +22,14 @@ export async function handleFloatReq(ctx, next) {
   const url = ctx?.query?.url
   // check url field exists
   if (!url) {
-    throwError(ctx, errors.InvalidInspect)
+    throwError(ctx, 'InvalidInspect')
     return next()
   }
 
   const link = new InspectURL(url)
   // validate inspect url
   if (!link.valid) {
-    throwError(ctx, errors.InvalidInspect)
+    throwError(ctx, 'InvalidInspect')
     return next()
   }
 
@@ -39,17 +39,18 @@ export async function handleFloatReq(ctx, next) {
 
   // check available bots
   if (!ctx.controller.hasBotOnline()) {
-    throwError(ctx, errors.SteamOffline)
+    throwError(ctx, 'SteamOffline')
     return next()
   }
 
   const item = await ctx.controller.execute(link).catch((err) => {
-    logger.debug(err)
+    ctx.catcher.addError('NoBotsAvailable')
+    logger.warn(err)
   })
 
   // empty response from steam
   if (!item) {
-    throwError(ctx, errors.TTLExceeded)
+    throwError(ctx, 'TTLExceeded')
     return next()
   }
 
@@ -58,9 +59,17 @@ export async function handleFloatReq(ctx, next) {
   await createItem(item)
 }
 
-export function getStats(ctx, next) {
+export function getHealth(ctx, next) {
   const data = ctx.controller.getCount()
 
-  ctx.ok(data)
+  ctx.ok({
+    host: os.hostname(),
+    uptime: Math.floor(process.uptime() * 1000),
+    ...ctx.catcher,
+    ...data,
+  })
+
+  ctx.catcher.clearErrors()
+
   return next()
 }
