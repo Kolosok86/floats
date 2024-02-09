@@ -10,6 +10,8 @@ const stickerSchema = new Schema({
   scale: Number,
   rotation: Number,
   tint_id: Number,
+  offset_x: Number,
+  offset_y: Number,
   sticker_id: Number,
 })
 
