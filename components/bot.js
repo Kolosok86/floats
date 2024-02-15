@@ -36,6 +36,8 @@ export class Bot {
   }
 
   logIn() {
+    this.gracefulExit()
+
     const loginData = {
       twoFactorCode: SteamTotp.getAuthCode(this.auth),
       accountName: this.username,
@@ -47,8 +49,12 @@ export class Bot {
     this.steamClient.logOn(loginData)
   }
 
-  refreshSession() {
-    if (Date.now() < this.time) {
+  gracefulExit() {
+    if (this.steamClient) this.steamClient.logOff()
+  }
+
+  refreshSession(force) {
+    if (Date.now() < this.time && !force) {
       return
     }
 
@@ -67,11 +73,15 @@ export class Bot {
     this.steamClient.on('error', (err) => {
       logger.error(`Error logging in ${this.username}:`, err)
 
+      this.ready = false
+
+      // bad proxy auth config
       if (err.toString().includes('Proxy Authentication')) {
-        this.ready = false
+        this.gracefulExit()
         return
       }
 
+      // something wrong with proxy
       if (err.toString().includes('Proxy connection timed out')) {
         setTimeout(() => {
           this.logIn()
@@ -85,8 +95,9 @@ export class Bot {
       }, ms('1h'))
     })
 
-    this.steamClient.on('disconnected', (eresult, msg) => {
-      logger.warn(`${this.username} Logged off, reconnecting! (${eresult}, ${msg})`)
+    this.steamClient.on('disconnected', (result, msg) => {
+      logger.warn(`${this.username} Logged off, reconnecting! (${result}, ${msg})`)
+      this.ready = false
     })
 
     this.steamClient.on('loggedOn', () => {
@@ -97,6 +108,31 @@ export class Bot {
       setTimeout(() => {
         this.steamClient.gamesPlayed([730], true)
       }, 3000)
+    })
+
+    this.csgoClient.on('error', (error) => {
+      logger.warn(`${this.username} CSGO responded with error ${error}`)
+
+      this.ready = false
+
+      // attempt reconnect after 5 minute
+      setTimeout(() => {
+        this.refreshSession(true)
+      }, 5 * 60000)
+    })
+
+    this.csgoClient.on('connectedToGC', () => {
+      logger.info(`${this.username} CSGO Client Ready!`)
+      this.ready = true
+    })
+
+    this.csgoClient.on('disconnectedFromGC', (reason) => {
+      logger.warn(`${this.username} CSGO unready (${reason}), trying to reconnect!`)
+      this.ready = false
+    })
+
+    this.csgoClient.on('connectionStatus', (status) => {
+      logger.debug(`${this.username} GC Connection Status Update ${status}`)
     })
 
     this.csgoClient.on('inspectItemInfo', (itemData) => {
@@ -146,31 +182,6 @@ export class Bot {
           this.busy = false
         }, delay)
       }
-    })
-
-    this.csgoClient.on('error', (error) => {
-      logger.warn(`${this.username} CSGO responded with error ${error}`)
-
-      this.ready = false
-
-      // attempt reconnect after 5 minute
-      setTimeout(() => {
-        this.refreshSession()
-      }, 5 * 60000)
-    })
-
-    this.csgoClient.on('connectedToGC', () => {
-      logger.info(`${this.username} CSGO Client Ready!`)
-      this.ready = true
-    })
-
-    this.csgoClient.on('disconnectedFromGC', (reason) => {
-      logger.warn(`${this.username} CSGO unready (${reason}), trying to reconnect!`)
-      this.ready = false
-    })
-
-    this.csgoClient.on('connectionStatus', (status) => {
-      logger.debug(`${this.username} GC Connection Status Update ${status}`)
     })
   }
 
