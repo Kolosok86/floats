@@ -6,6 +6,7 @@ export class Catcher {
     this.SteamOffline = 0
     this.TTLExceeded = 0
     this.NoBotsAvailable = 0
+    this.Unexpected = 0
   }
 
   clearErrors() {
@@ -13,6 +14,7 @@ export class Catcher {
     this.SteamOffline = 0
     this.TTLExceeded = 0
     this.NoBotsAvailable = 0
+    this.Unexpected = 0
   }
 
   getError(type) {
@@ -25,4 +27,11 @@ export class Catcher {
   addError(type) {
     this[type]++
   }
+}
+
+export function throwError(ctx, type) {
+  const error = ctx.catcher.getError(type || 'Unexpected')
+
+  ctx.body = { message: error.msg }
+  ctx.status = error.status
 }

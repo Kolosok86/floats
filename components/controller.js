@@ -76,6 +76,6 @@ export class Controller {
     let freeBot = this.getFreeBot()
 
     if (freeBot) return freeBot.sendFloatRequest(data)
-    else return Promise.reject('NoBotsAvailable')
+    else return Promise.reject(new Error('NoBotsAvailable'))
   }
 }

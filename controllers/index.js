@@ -1,7 +1,7 @@
 import { InspectURL } from '../components/inspect_url.js'
 import { removeNullValues } from '../utils/index.js'
 import { getItemData, createItem } from '../database/mongo.js'
-import { throwError } from '../services/errors.js'
+import { throwError } from '../components/catcher.js'
 import { logger } from '../services/logger.js'
 import os from 'os'
 
@@ -44,13 +44,12 @@ export async function handleFloatReq(ctx, next) {
   }
 
   const item = await ctx.controller.execute(link).catch((err) => {
-    ctx.catcher.addError('NoBotsAvailable')
-    logger.warn(err)
+    logger.warn('Error in check item %s', err?.message || err)
+    throwError(ctx, err?.message)
   })
 
   // empty response from steam
   if (!item) {
-    throwError(ctx, 'TTLExceeded')
     return next()
   }
 

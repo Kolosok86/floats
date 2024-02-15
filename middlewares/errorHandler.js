@@ -1,4 +1,4 @@
-import { getBoom } from '../services/errors.js'
+import { throwError } from '../components/catcher.js'
 import { logger } from '../services/logger.js'
 
 export async function errorHandler(ctx, next) {
@@ -7,7 +7,7 @@ export async function errorHandler(ctx, next) {
   } catch (err) {
     logger.error(err)
 
-    const boom = getBoom()
-    ctx.internalServerError(boom)
+    throwError(ctx, 'Unexpected')
+    ctx.catcher.addError()
   }
 }

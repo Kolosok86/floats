@@ -53,6 +53,10 @@ export class Bot {
     if (this.steamClient) this.steamClient.logOff()
   }
 
+  setLastLogin() {
+    this.time = Date.now() + this.timeStep
+  }
+
   refreshSession(force) {
     if (Date.now() < this.time && !force) {
       return
@@ -63,7 +67,7 @@ export class Bot {
     }
 
     // update unix time
-    this.time = Date.now() + this.timeStep
+    this.setLastLogin()
 
     // execute update
     this.csgoClient.refreshSession()
@@ -108,6 +112,8 @@ export class Bot {
       setTimeout(() => {
         this.steamClient.gamesPlayed([730], true)
       }, 3000)
+
+      this.opening = true
     })
 
     this.csgoClient.on('error', (error) => {
@@ -123,6 +129,12 @@ export class Bot {
 
     this.csgoClient.on('connectedToGC', () => {
       logger.info(`${this.username} CSGO Client Ready!`)
+
+      if (this.opening) {
+        this.setLastLogin()
+      }
+
+      this.opening = false
       this.ready = true
     })
 
@@ -189,7 +201,7 @@ export class Bot {
     return new Promise((resolve, reject) => {
       // check bot status
       if (!this.ready || this.busy) {
-        reject(new Error('This bot is not ready or busy'))
+        reject(new Error('NoBotsAvailable'))
       }
 
       this.resolve = resolve
@@ -214,7 +226,7 @@ export class Bot {
         // GC didn't respond in time, reset and reject
         this.busy = false
         this.currentRequest = false
-        reject(new Error('ttl exceeded'))
+        reject(new Error('TTLExceeded'))
       }, 2000)
     })
   }
