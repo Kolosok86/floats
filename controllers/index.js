@@ -58,6 +58,20 @@ export async function handleFloatReq(ctx, next) {
   await createItem(item)
 }
 
+export async function getDescriptions(ctx, next) {
+  const { data } = ctx.request.body
+  if (!data) {
+    throwError(ctx, 'InvalidInspect')
+    return next()
+  }
+
+  const bot = ctx.controller.getBotByCounter()
+  const response = await bot.getClassInfo(data)
+
+  ctx.ok(response)
+  return next()
+}
+
 export function getHealth(ctx, next) {
   const data = ctx.controller.getCount()
 

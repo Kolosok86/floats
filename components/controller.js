@@ -1,10 +1,12 @@
 import { Bot } from './bot.js'
+import { Counter } from './counter.js'
 import pRetry from 'p-retry'
 import PQueue from 'p-queue'
 import ms from 'ms'
 
 export class Controller {
   constructor() {
+    this.counter = new Counter()
     this.bots = []
   }
 
@@ -48,6 +50,14 @@ export class Controller {
     if (!bots.length) return false
 
     return bots[Math.floor(Math.random() * bots.length)]
+  }
+
+  getBotByCounter() {
+    const bots = this.bots.filter((bot) => bot.ready)
+    if (!bots.length) return false
+
+    this.counter.total = bots.length
+    return bots[this.counter.next()]
   }
 
   hasBotOnline() {

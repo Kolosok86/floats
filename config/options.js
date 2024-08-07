@@ -1,5 +1,17 @@
 import { logger } from '../services/logger.js'
 
+export const bodyparser = {
+  enableTypes: ['json'],
+  jsonLimit: '1mb',
+  textLimit: '1mb',
+  strict: true,
+  onerror: function (err, ctx) {
+    ctx.throw(400, {
+      msg: 'json parse error',
+    })
+  },
+}
+
 export const helmet = {
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: true,

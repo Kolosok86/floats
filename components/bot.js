@@ -30,7 +30,7 @@ export class Bot {
     this.csgoClient = new GlobalOffensive(this.steamClient)
 
     const variance = getRandomVariance()
-    this.timeStep = ms('45m') + variance
+    this.timeStep = ms('30m') + variance
 
     this.bindEventHandlers()
   }
@@ -71,6 +71,15 @@ export class Bot {
 
     // execute update
     this.csgoClient.refreshSession()
+  }
+
+  getClassInfo(data) {
+    return new Promise((resolve, reject) => {
+      this.steamClient.getAssetClassInfo('en', 730, data, (err, response) => {
+        if (err) return reject(err)
+        resolve(response)
+      })
+    })
   }
 
   bindEventHandlers() {
