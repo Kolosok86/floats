@@ -30,12 +30,14 @@ export class Bot {
     this.csgoClient = new GlobalOffensive(this.steamClient)
 
     const variance = getRandomVariance()
-    this.timeStep = ms('30m') + variance
+    this.timeStep = ms('25m') + variance
 
     this.bindEventHandlers()
   }
 
   logIn() {
+    if (this.exit) return
+
     this.gracefulExit()
 
     const loginData = {
@@ -58,16 +60,11 @@ export class Bot {
   }
 
   refreshSession(force) {
+    if (this.exit || !this.ready) return
+
     if (Date.now() < this.time && !force) {
       return
     }
-
-    if (!this.ready) {
-      return
-    }
-
-    // update unix time
-    this.setLastLogin()
 
     // execute update
     this.csgoClient.refreshSession()
@@ -91,6 +88,7 @@ export class Bot {
       // bad proxy auth config
       if (err.toString().includes('Proxy Authentication')) {
         this.gracefulExit()
+        this.exit = true
         return
       }
 
@@ -121,8 +119,6 @@ export class Bot {
       setTimeout(() => {
         this.steamClient.gamesPlayed([730], true)
       }, 3000)
-
-      this.opening = true
     })
 
     this.csgoClient.on('error', (error) => {
@@ -139,11 +135,7 @@ export class Bot {
     this.csgoClient.on('connectedToGC', () => {
       logger.info(`${this.username} CSGO Client Ready!`)
 
-      if (this.opening) {
-        this.setLastLogin()
-      }
-
-      this.opening = false
+      this.setLastLogin()
       this.ready = true
     })
 
