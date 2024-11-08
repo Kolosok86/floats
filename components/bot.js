@@ -180,6 +180,7 @@ export class Bot {
         delete itemData.inventory
         delete itemData.accountid
 
+        itemData.keychains = itemData.keychains || []
         itemData.stickers = itemData.stickers || []
         // prettier-ignore
         itemData.stickers = itemData.stickers.map((sticker) => ({

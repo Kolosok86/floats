@@ -12,12 +12,16 @@ const stickerSchema = new Schema({
   tint_id: Number,
   offset_x: Number,
   offset_y: Number,
+  offset_z: Number,
+  pattern: Number,
   sticker_id: Number,
 })
 
 const itemsSchema = new Schema(
   {
     stickers: [stickerSchema],
+    keychains: [stickerSchema],
+    petindex: Number,
     defindex: Number,
     paintindex: Number,
     rarity: Number,

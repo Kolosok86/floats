@@ -180,6 +180,18 @@ export class GameData {
       if (name) sticker.name = name
     }
 
+    // Get keychain name
+    const keychainDefinitions = this.items_game.keychain_definitions
+    for (const keychain of iteminfo.keychains || []) {
+      const kit = keychainDefinitions[keychain.sticker_id]
+
+      if (!kit) continue
+
+      let name = this.csgo_english[kit.loc_name.replace('#', '')]
+
+      if (name) keychain.name = name
+    }
+
     // Get the skin name
     let skin_name = ''
 
@@ -316,6 +328,8 @@ export class GameData {
 
     if (iteminfo.weapon_type === 'Sticker' || iteminfo.weapon_type === 'Sealed Graffiti') {
       name += `| ${iteminfo.stickers[0].name}`
+    } else if (iteminfo.weapon_type === 'Charm') {
+      name += `| ${iteminfo.keychains[0].name}`
     }
 
     // Vanilla items have an item_name of '-'
