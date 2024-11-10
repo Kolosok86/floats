@@ -14,7 +14,9 @@ export class Bot {
     this.password = pass
     this.auth = auth
 
-    const opts = {}
+    const opts = {
+      protocol: SteamUser.EConnectionProtocol.TCP,
+    }
 
     if (proxy?.startsWith('socks')) {
       opts.socksProxy = proxy
@@ -65,6 +67,8 @@ export class Bot {
     if (Date.now() < this.time && !force) {
       return
     }
+
+    this.ready = false
 
     // execute update
     this.csgoClient.refreshSession()
@@ -225,6 +229,10 @@ export class Bot {
       this.csgoClient.inspectItem(params.s !== '0' ? params.s : params.m, params.a, params.d)
 
       this.ttlTimeout = setTimeout(() => {
+        logger.warn(
+          `${this.username} | ttl timeout for ${params.a}, ${params.s !== '0' ? params.s : params.m}, ${params.d}`
+        )
+
         // GC didn't respond in time, reset and reject
         this.busy = false
         this.currentRequest = false

@@ -61,5 +61,5 @@ export function removeNullValues(obj) {
 }
 
 export function getRandomVariance() {
-  return parseInt(Math.random() * 5 * 60 * 1000)
+  return parseInt(Math.random() * 4 * 60 * 1000)
 }

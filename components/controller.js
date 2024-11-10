@@ -56,7 +56,10 @@ export class Controller {
     const bots = this.bots.filter((bot) => bot.ready)
     if (!bots.length) return false
 
-    this.counter.total = bots.length
+    if (this.counter.total !== bots.length) {
+      this.counter.total = bots.length
+    }
+
     return bots[this.counter.next()]
   }
 
