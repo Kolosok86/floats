@@ -66,9 +66,16 @@ export async function getDescriptions(ctx, next) {
   }
 
   const bot = ctx.controller.getBotByCounter()
-  const response = await bot.getClassInfo(data)
+  if (!bot) {
+    throwError(ctx, 'NoBotsAvailable')
+    return next()
+  }
 
-  ctx.ok(response)
+  const response = await bot.getClassInfo(data).catch((err) => {
+    logger.warn('Error in get descriptions %s', err?.message || err)
+  })
+
+  ctx.ok(response || [])
   return next()
 }
 
